@@ -1,0 +1,11 @@
+[package]
+name = "exercism"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+grapheme = []
+
+[dependencies]
+time = "0.3.22"
+unicode-segmentation = "1.10.1"
