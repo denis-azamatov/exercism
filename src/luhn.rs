@@ -1,6 +1,50 @@
-/// Check a Luhn checksum.
 pub fn is_valid(code: &str) -> bool {
-    unimplemented!("Is the Luhn checksum for {code} valid?");
+    let digits: Vec<Option<i32>> = code
+        .chars()
+        .filter(|x| !x.is_whitespace())
+        .map(|x| x.to_digit(10).and_then(|y| Some(y as i32)))
+        .collect();
+
+    if digits.len() <= 1 {
+        return false;
+    }
+
+    let (odd, even): (Vec<_>, Vec<_>) = digits
+        .iter()
+        .rev()
+        .enumerate()
+        .partition(|(i, _)| i % 2 == 0);
+
+    even.iter()
+        .map(|(_, x)| {
+            x.and_then(|x| {
+                if x > 4 {
+                    (x * 2 - 9).into()
+                } else {
+                    (x * 2).into()
+                }
+            })
+        })
+        .chain(odd.iter().map(|(_, x)| x.and_then(|x| x.into())))
+        .reduce(|acc, x| match (acc, x) {
+            (Some(acc), Some(x)) => Some(acc + x),
+            _ => None,
+        })
+        .and_then(|x| x.and_then(|sum| Some(sum % 10 == 0)))
+        .unwrap_or(false)
+}
+
+pub fn is_valid_short(code: &str) -> bool {
+    code.chars()
+        .rev()
+        .filter(|c| !c.is_whitespace())
+        .try_fold((0, 0), |(sum, count), val| {
+            val.to_digit(10)
+                .map(|num| if count % 2 == 1 { num * 2 } else { num })
+                .map(|num| if num > 9 { num - 9 } else { num })
+                .map(|num| (num + sum, count + 1))
+        })
+        .map_or(false, |(sum, count)| sum % 10 == 0 && count > 1)
 }
 
 #[cfg(test)]
@@ -10,6 +54,7 @@ mod test {
     fn process_valid_case(number: &str, is_luhn_expected: bool) {
         assert_eq!(is_valid(number), is_luhn_expected);
     }
+
     #[test]
     fn test_single_digit_strings_can_not_be_valid() {
         process_valid_case("1", false);
