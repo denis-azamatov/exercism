@@ -8,3 +8,4 @@ pub mod sublist;
 pub mod minesweeper;
 pub mod luhn;
 pub mod parallel_letter_frequency;
+pub mod macros;
