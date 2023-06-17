@@ -8,31 +8,40 @@ pub enum Comparison {
 
 pub fn sublist<T: PartialEq>(_first_list: &[T], _second_list: &[T]) -> Comparison {
     match _first_list.len().cmp(&_second_list.len()) {
-        std::cmp::Ordering::Equal => _first_list
-            .eq(_second_list)
-            .then(|| Comparison::Equal)
-            .unwrap_or(Comparison::Unequal),
+        std::cmp::Ordering::Equal => {
+            if _first_list.eq(_second_list) {
+                Comparison::Equal
+            } else {
+                Comparison::Unequal
+            }
+        }
         std::cmp::Ordering::Less => _first_list
             .len()
             .eq(&0)
-            .then(|| Comparison::Sublist)
+            .then_some(Comparison::Sublist)
             .unwrap_or_else(|| {
-                _second_list
+                if _second_list
                     .windows(_first_list.len())
                     .any(|w| w.eq(_first_list))
-                    .then(|| Comparison::Sublist)
-                    .unwrap_or(Comparison::Unequal)
+                {
+                    Comparison::Sublist
+                } else {
+                    Comparison::Unequal
+                }
             }),
         std::cmp::Ordering::Greater => _second_list
             .len()
             .eq(&0)
-            .then(|| Comparison::Superlist)
+            .then_some(Comparison::Superlist)
             .unwrap_or_else(|| {
-                _first_list
+                if _first_list
                     .windows(_second_list.len())
                     .any(|w| w.eq(_second_list))
-                    .then(|| Comparison::Superlist)
-                    .unwrap_or(Comparison::Unequal)
+                {
+                    Comparison::Superlist
+                } else {
+                    Comparison::Unequal
+                }
             }),
     }
 }
@@ -43,9 +52,27 @@ pub fn sublist_short<T: Eq>(_first_list: &[T], _second_list: &[T]) -> Comparison
         (0, 0) => Equal,
         (0, _) => Sublist,
         (_, 0) => Superlist,
-        (m, n) if m > n => _first_list.windows(n).any(|v| v == _second_list).then(|| Superlist).unwrap_or(Unequal),
-        (m, n) if m < n => _second_list.windows(m).any(|v| v == _first_list).then(|| Sublist).unwrap_or(Unequal),
-        (_, _) =>  _first_list.eq( _second_list).then(||Equal).unwrap_or(Unequal),
+        (m, n) if m > n => {
+            if _first_list.windows(n).any(|v| v == _second_list) {
+                Superlist
+            } else {
+                Unequal
+            }
+        }
+        (m, n) if m < n => {
+            if _second_list.windows(m).any(|v| v == _first_list) {
+                Sublist
+            } else {
+                Unequal
+            }
+        }
+        (_, _) => {
+            if _first_list.eq(_second_list) {
+                Equal
+            } else {
+                Unequal
+            }
+        }
     }
 }
 

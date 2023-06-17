@@ -2,7 +2,7 @@ pub fn is_valid(code: &str) -> bool {
     let digits: Vec<Option<i32>> = code
         .chars()
         .filter(|x| !x.is_whitespace())
-        .map(|x| x.to_digit(10).and_then(|y| Some(y as i32)))
+        .map(|x| x.to_digit(10).map(|y| y as i32))
         .collect();
 
     if digits.len() <= 1 {
@@ -30,7 +30,7 @@ pub fn is_valid(code: &str) -> bool {
             (Some(acc), Some(x)) => Some(acc + x),
             _ => None,
         })
-        .and_then(|x| x.and_then(|sum| Some(sum % 10 == 0)))
+        .and_then(|x| x.map(|x| x % 10 == 0))
         .unwrap_or(false)
 }
 

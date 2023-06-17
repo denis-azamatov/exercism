@@ -25,14 +25,12 @@ mod test {
         assert_eq!(computed, expected);
     }
     #[test]
-    #[ignore]
     fn test_single() {
         let mut expected = HashMap::new();
         expected.insert(1, "one");
         assert_eq!(hashmap!(1 => "one"), expected);
     }
     #[test]
-    #[ignore]
     fn test_no_trailing_comma() {
         let mut expected = HashMap::new();
         expected.insert(1, "one");
@@ -40,7 +38,6 @@ mod test {
         assert_eq!(hashmap!(1 => "one", 2 => "two"), expected);
     }
     #[test]
-    #[ignore]
     fn test_trailing_comma() {
         let mut expected = HashMap::new();
         expected.insert('h', 89);
@@ -58,7 +55,6 @@ mod test {
         );
     }
     #[test]
-    #[ignore]
     fn test_nested() {
         let mut expected = HashMap::new();
         expected.insert("non-empty", {
@@ -81,14 +77,12 @@ mod test {
     }
     mod test {
         #[test]
-        #[ignore]
         fn type_not_in_scope() {
             let _empty: ::std::collections::HashMap<(), ()> = hashmap!();
             let _without_comma = hashmap!(23=> 623, 34 => 21);
             let _with_trailing = hashmap!(23 => 623, 34 => 21,);
         }
         #[test]
-        #[ignore]
         fn test_macro_out_of_scope() {
             let _empty: ::std::collections::HashMap<(), ()> = hashmap!();
             let _without_comma = hashmap!(23=> 623, 34 => 21);
@@ -96,7 +90,6 @@ mod test {
         }
     }
     #[test]
-    #[ignore]
     fn test_type_override() {
         // The macro should always use std::collections::HashMap and ignore crate::std::collections::HashMap
         mod std {

@@ -11,28 +11,27 @@ pub fn annotate(minefield: &[&str]) -> Vec<String> {
 
     let grid: Vec<&u8> = minefield
         .iter()
-        .map(|&x| x.as_bytes())
-        .flat_map(|x| x)
+        .flat_map(|&x| x.as_bytes())
         .collect();
 
     let filled_grid: Vec<u8> = grid
         .iter()
         .enumerate()
         .map(|(i, x)| {
-            if **x == '*' as u8 {
-                return '*' as u8;
+            if **x == b'*' {
+                return b'*';
             }
             let neighbors = get_neighbors(i as i32, width, height);
             let mut count = 0;
-            for idx in neighbors.iter().filter(|x| x.is_some()).map(|x| x.unwrap()) {
+            for &idx in neighbors.iter().filter(|x| x.is_some()).flatten() {
                 let cell = grid[idx as usize];
-                if *cell == '*' as u8 {
+                if *cell == b'*' {
                     count += 1;
                 }
             }
 
             match count {
-                0 => ' ' as u8,
+                0 => b' ',
                 _ => count.to_string().as_bytes()[0],
             }
         })
@@ -58,17 +57,17 @@ fn get_neighbors(idx: i32, width: i32, height: i32) -> [Option<i32>; 8] {
     let is_left = normalized_left < 0;
     let is_right = normalized_right >= width;
 
-    let left = (!is_left).then(|| denormalize(normalized_left, row, width));
-    let right = (!is_right).then(|| denormalize(normalized_right, row, width));
+    let left = (!is_left).then_some(denormalize(normalized_left, row, width));
+    let right = (!is_right).then_some( denormalize(normalized_right, row, width));
 
-    let top = (!is_top).then(|| idx - width);
-    let bottom = (!is_bottom).then(|| idx + width);
+    let top = (!is_top).then_some(idx - width);
+    let bottom = (!is_bottom).then_some(idx + width);
 
-    let top_left = (!(is_top || is_left)).then(|| idx - width - 1);
-    let top_right = (!(is_top || is_right)).then(|| idx - width + 1);
+    let top_left = (!(is_top || is_left)).then_some( idx - width - 1);
+    let top_right = (!(is_top || is_right)).then_some( idx - width + 1);
 
-    let bottom_left = (!(is_bottom || is_left)).then(|| idx + width - 1);
-    let bottom_right = (!(is_bottom || is_right)).then(|| idx + width + 1);
+    let bottom_left = (!(is_bottom || is_left)).then_some( idx + width - 1);
+    let bottom_right = (!(is_bottom || is_right)).then_some( idx + width + 1);
 
     [
         top_left,

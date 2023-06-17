@@ -19,7 +19,7 @@ pub fn anagrams_for<'a>(word: &str, possible_anagrams: &'a [&str]) -> HashSet<&'
 
             sorted_word.cmp(&sorted_pa).is_eq()
         })
-        .map(|&x| x)
+        .copied()
         .collect()
 }
 

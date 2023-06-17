@@ -5,7 +5,7 @@ use std::thread;
 pub fn frequency(input: &[&str], worker_count: usize) -> HashMap<char, usize> {
     let result = Mutex::new(HashMap::new());
 
-    if input.len() == 0 {
+    if input.is_empty() {
         return result.into_inner().unwrap();
     }
 
