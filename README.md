@@ -11,11 +11,3 @@ To run test for a specific module, run the following command:
 ```bash
 cargo test [module NAME]
 ```
-
-<style>
-a {
-    text-decoration: none;
-    color: #8fe698;
-    font-weight: bold
-}
-</style>
