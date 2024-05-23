@@ -28,3 +28,4 @@ pub mod acronym;
 pub mod collatz;
 mod diffie_hellman;
 pub mod series;
+mod kindrgarten;
