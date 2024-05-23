@@ -27,3 +27,4 @@ pub mod matching_brackets;
 pub mod acronym;
 pub mod collatz;
 mod diffie_hellman;
+pub mod series;
