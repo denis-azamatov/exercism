@@ -5,6 +5,7 @@ edition = "2021"
 
 [features]
 grapheme = []
+big-primes = []
 
 [dependencies]
 time = "0.3.22"
