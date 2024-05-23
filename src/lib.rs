@@ -25,3 +25,4 @@ pub mod bob;
 pub mod high_scores;
 pub mod matching_brackets;
 pub mod acronym;
+pub mod collatz;
