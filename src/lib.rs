@@ -30,3 +30,4 @@ mod diffie_hellman;
 pub mod series;
 pub mod kindrgarten;
 pub mod eliuds_eggs;
+pub mod all_your_base;
