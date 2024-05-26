@@ -29,7 +29,7 @@ pub fn convert(number: &[u32], from_base: u32, to_base: u32) -> Result<Vec<u32>,
 
     while sum > 0 {
         result.push(sum % to_base);
-        sum = sum / to_base;
+        sum /= to_base;
     }
 
     result.reverse();

@@ -32,7 +32,7 @@ pub fn mod_exp(base: u64, exponent: u64, modulus: u64) -> u64 {
             result = (result * base) % modulus;
         }
         base = (base * base) % modulus;
-        exponent = exponent >> 1;
+        exponent >>= 1;
     }
 
     result as u64

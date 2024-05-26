@@ -1,5 +1,5 @@
 pub fn plants(diagram: &str, student: &str) -> Vec<&'static str> {
-    let children = vec!["Alice", "Bob", "Charlie", "David", "Eve", "Fred", "Ginny", "Harriet", "Ileana", "Joseph", "Kincaid", "Larry"];
+    let children = ["Alice", "Bob", "Charlie", "David", "Eve", "Fred", "Ginny", "Harriet", "Ileana", "Joseph", "Kincaid", "Larry"];
 
     let id = children.iter().position(|&x| x == student).unwrap();
 
